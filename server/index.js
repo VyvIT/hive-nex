@@ -5,9 +5,12 @@ const logger = require('./logger');
 const argv = require('./argv');
 const port = require('./port');
 const setup = require('./middlewares/frontend');
+const responseTime = require('./middlewares/responseTime');
 const resolve = require('path').resolve;
 
 const app = new Koa();
+
+app.use(responseTime);
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);

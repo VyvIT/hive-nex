@@ -43,6 +43,11 @@
   "dllPlugin": {
     "name": "_hive-nex-dlls",
     "path": "node_modules/_hive-nex-dlls",
+    "dlls": {
+      "common": [
+        "lodash"
+      ]
+    },
     "exclude": [
       "koa",
       "koa-router",
