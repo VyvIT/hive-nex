@@ -41,7 +41,7 @@ const config = require('./common')({
   // Add hot reloading in development
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(process.cwd(), 'app/app.js'),
+    path.join(process.cwd(), 'app/index.js'),
   ],
 
   // Don't use hashes in dev mode for better performance

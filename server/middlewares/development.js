@@ -1,27 +1,33 @@
 const path = require('path');
 const webpack = require('webpack');
-const { devMiddleware, hotMiddleware } = require('koa-webpack-middleware');
-const logger = require('../logger');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+// const logger = require('../logger');
 
-module.exports = function addDevMiddlewares(app, router, webpackConfig) {
-  const compiler = webpack(webpackConfig);
-  const devMiddlewareInstance = devMiddleware(compiler, {
+const createWebpackMiddleware = (compiler, publicPath) => {
+  return webpackDevMiddleware(compiler, {
     noInfo: true,
-    publicPath: webpackConfig.output.publicPath,
+    publicPath,
     silent: true,
     stats: 'errors-only',
   });
-  app.use(devMiddlewareInstance);
-  app.use(hotMiddleware(compiler));
+};
+
+module.exports = function addDevMiddlewares(app, webpackConfig) {
+  const compiler = webpack(webpackConfig);
+  const webpackDevMiddleware = createWebpackMiddleware(compiler, webpackConfig.output.publicPath);
+
+  app.use(webpackDevMiddleware);
+  app.use(webpackHotMiddleware(compiler));
 
   // Since webpackDevMiddleware uses memory-fs internally to store build artifacts, we use it instead
-  const fs = devMiddlewareInstance.fileSystem;
-  router.get('*', (ctx, next) => {
+  const fs = webpackDevMiddleware.fileSystem;
+  app.get('*', (req, res) => {
     fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {
       if (err) {
-        ctx.status = 404;
+        res.sendStatus(404);
       } else {
-        ctx = file;
+        res.send(file.toString());
       }
     });
   });
