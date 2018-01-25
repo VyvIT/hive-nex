@@ -4,8 +4,10 @@
   "main": "index.js",
   "author": "Vytautas V.",
   "scripts": {
-    "start": "cross-env NODE_ENV=development node server",
-    "build": "cross-env NODE_ENV=production webpack --config ./configs/webpack/prod.js --color -p --progress --hide-modules --display-optimization-bailout",
+    "start:dev": "cross-env NODE_ENV=development node server",
+    "production": "npm run test && npm run build && npm run start:prod",
+    "start:prod": "cross-env NODE_ENV=production node server",
+    "build:prod": "cross-env NODE_ENV=production webpack --config ./internal/webpack/prod.js --color -p --progress --hide-modules --display-optimization-bailout",
     "install:clean": "rimraf ./node_modules",
     "build:clean": "rimraf ./build/*.*",
     "build:dll": "node ./internal/dev/build_dll.js",
@@ -63,6 +65,7 @@
     ]
   },
   "dependencies": {
+    "compression": "^1.7.1",
     "express": "4.16.2",
     "immutable": "3.8.2",
     "lodash": "4.17.4",
