@@ -1,8 +1,10 @@
 import path from 'path';
-const path = require('path');
+import apiRouter from './api';
+
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+
 // const logger = require('../logger');
 
 const createWebpackMiddleware = (compiler, publicPath) => {
@@ -23,7 +25,9 @@ module.exports = function addDevMiddlewares(app, webpackConfig) {
 
   // Since webpackDevMiddleware uses memory-fs internally to store build artifacts, we use it instead
   const fs = webpackDevMiddleware.fileSystem;
+  app.use(apiRouter);
   app.get('*', (req, res) => {
+    console.log('dev * handler');
     fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {
       if (err) {
         res.sendStatus(404);

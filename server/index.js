@@ -8,14 +8,18 @@ const resolve = require('path').resolve;
 
 const app = express();
 
+if (process.env.NODE_ENV === 'production') {
+  console.log('production mode')
+} else {
+  console.log('NON production mode!')
+}
 // app.use(responseTime);
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 
-// In production we need to pass these values in instead of relying on webpack
 setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
+  outputPath: resolve(process.cwd(), 'build/client'),
   publicPath: '/',
 });
 

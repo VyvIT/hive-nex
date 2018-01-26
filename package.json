@@ -4,13 +4,15 @@
   "main": "index.js",
   "author": "Vytautas V.",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development node server",
-    "start:prod": "cross-env NODE_ENV=production node server",
-    "build:prod": "cross-env NODE_ENV=production webpack --config ./internal/webpack/prod.js --color -p --progress --hide-modules --display-optimization-bailout",
-    "build": "cross-env BABEL_ENV=server babel server/index.js -d build/server",
-    "production": "npm run test && npm run build && npm run start:prod",
+    "start:dev": "cross-env NODE_ENV=development BABEL_ENV=server babel-node server",
+    "start:prod": "cross-env NODE_ENV=production node build/server",
+    "build:client:prod": "npm run clean:client && cross-env NODE_ENV=production webpack --config ./internal/webpack/prod.js --color -p --progress --hide-modules --display-optimization-bailout",
+    "build:server:prod": "npm run clean:server && cross-env BABEL_ENV=server NODE_ENV=production babel server -d build/server",
+    "todo..production": "npm run test && npm run build && npm run start:prod",
     "clean:modules": "rimraf ./node_modules",
     "clean:build": "rimraf ./build/*.*",
+    "clean:client": "rimraf ./build/client",
+    "clean:server": "rimraf ./build/server",
     "build:dll": "node ./internal/dev/build_dll.js",
     "extract-intl": "babel-node --presets env,stage-0 -- ./internal/extractTranslations.js"
   },
@@ -38,11 +40,14 @@
       },
       "server": {
         "presets": [
-          ["env", {
-            "targets": {
-              "node": "current"
+          [
+            "env",
+            {
+              "targets": {
+                "node": "current"
+              }
             }
-          }]
+          ]
         ]
       },
       "test": {
@@ -77,6 +82,7 @@
   "dependencies": {
     "compression": "^1.7.1",
     "express": "4.16.2",
+    "http-proxy": "^1.16.2",
     "immutable": "3.8.2",
     "lodash": "4.17.4",
     "prop-types": "15.6.0",
