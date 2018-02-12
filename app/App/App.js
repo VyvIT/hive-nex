@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
+import LoginContainer from '../containers/LoginContainer';
 import HomePage from '../containers/HomePage/Loadable';
 import LocaleToggle from '../containers/LocaleToggle';
 
@@ -33,7 +34,8 @@ export default function App() {
       <LocaleToggle />
       {/*<Header />*/}
       <Switch>
-       <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={HomePage}/>
+        <Route path="/login" component={LoginContainer}/>
       {/* <Route path="/features" component={FeaturePage} />
        <Route path="" component={NotFoundPage} />*/}
        </Switch>

@@ -1,0 +1,7 @@
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const SESSION_STORAGE_CHECKED = 'SESSION_STORAGE_CHECKED';
+export const SESSION_STORAGE_KEY = '_LoggedInUserName';
+
+export const LOCKED_ACCOUNT_CODE = '0006';
