@@ -87,6 +87,7 @@ export default withRouter(reduxForm(
 )(LoginContainer));
 */
 
+
 const renderField = ({
   input,
   label,
@@ -106,18 +107,33 @@ const renderField = ({
 
 class LoginContainer extends Component {
 
+  onSubmit = (formData) => {
+    console.log();
+    return this.props.login(formData.toJS()).then((/* payload */) => {
+      this.redirectToPage();
+    });
+  };
+
+  redirectToPage = () => {
+    console.log(this.props.location.query);
+    // const { next, ...rest } = this.props.location.query;
+    // this.props.router.push({
+    //   pathname: next,
+    //   query: rest,
+    // });
+  };
+
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(this.onSubmit)}>
         <Field
           name="username"
           type="text"
           component={renderField}
           label="Username"
         />
-        <Field name="email" type="email" component={renderField} label="Email"/>
-        <Field name="age" type="number" component={renderField} label="Age"/>
+        <Field name="password" type="password" component={renderField} label="Password"/>
         <div>
           <button type="submit" disabled={submitting}>
             Submit
@@ -133,6 +149,7 @@ class LoginContainer extends Component {
 
 const validate = (values) => {
   console.log(values);
+  return {};
   /*const errors = {};
   if (!values.username || values.username.trim() === '') {
     errors.username = 'The Username field is required.';
@@ -156,7 +173,7 @@ const mapStateToProps = (state) => {
     test: 'a',
   }
 };
-const withConnect = connect(null, { ...actions });
+const withConnect = connect(mapStateToProps, { ...actions });
 
 export default compose(
 //  withReducer,

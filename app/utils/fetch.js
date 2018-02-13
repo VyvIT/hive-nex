@@ -45,7 +45,7 @@ export function checkStatus(response) {
 }
 
 export default function customFetch(url, options) {
-  return (url, options);
+  return fetch(url, options);
 }
 
 export function enhancedFetch(url, options = {}) {
@@ -117,11 +117,5 @@ export function xform(url, data) {
 export function del(url) {
   return enhancedFetch(url, {
     method: 'delete',
-  });
-}
-
-export function fixedEncodeURIComponent(str) {
-  return encodeURIComponent(str).replace(/[!'()*]/g, (c) => {
-    return `%${c.charCodeAt(0).toString(16)}`;
   });
 }
