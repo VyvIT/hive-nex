@@ -1,27 +1,35 @@
 import express from 'express';
+import nconf from 'nconf';
 import httpProxy from 'http-proxy';
+import logger from '../logger';
+
+const apiUrl = nconf.get('server:apiURL');
 
 const proxyApiHandler = function (req, res) {
-  console.log('proxyApiHandler', req.url);
+  logger.silly(`(proxyApiHandler) handling: ${req.url}`);
   proxy.web(req, res);
 };
-
+logger.info(`(proxyApiHandler) api url: ${apiUrl}`);
 const proxy = httpProxy.createProxyServer({
-  // target: 'https://10.100.248.4:8443', // baseUrl,
-  target: 'http://localhost:5000/api', // baseUrl,
-  preserveHeaderKeyCase: true,
+  target: apiUrl,
   secure: false,
 });
 
-proxy.on('proxyRes', function (proxyRes, req, res) {
-  console.log(proxyRes.headers['set-cookie']);
-});
+// proxy.on('proxyRes', (proxyRes, req, res) => {
+//   console.log(req.url);
+//   console.log(req.path);
+//   console.log(req.pathname);
+//   console.log(proxyRes.headers['set-cookie']);
+// });
 
-proxy.on('error', (err, req) => {
-  console.log('proxy error on:', req.url);
-  console.log(err);
-  // logger.error('proxy error on:', req.url);
-  // logger.error(err);
+proxy.on('error', (err, req, res) => {
+  logger.error(`(proxyApiHandler) error: ${err}`);
+  if (res) {
+    res.writeHead(500, {
+      'Content-Type': 'text/plain',
+    });
+    res.end('Something went wrong. And we are reporting a custom error message.');
+  }
 });
 
 const router = express.Router();
@@ -29,10 +37,9 @@ const router = express.Router();
 router
   .get('/test', proxyApiHandler)
   .post('/login', proxyApiHandler)
-  .all('/logout', proxyApiHandler);
-// proxying will fail if koa bodyParser is used so apply body parser only on custom endpoint
-//.post('/export', koaBodyParser, exportHandler)
-//.all(/^\/api|public\/.+/, proxyApiHandler);
+  .all('/logout', proxyApiHandler)
+  .all(/^\/api|public\/.+/, proxyApiHandler);
+// TODO: .post('/export', koaBodyParser, exportHandler)
 // .get('*', reactRenderHandler);
 
 export default router;

@@ -1,16 +1,18 @@
-/**
- * Create the store with dynamic reducers
- */
-
 import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
+import apiMiddleware from './middlewares/api';
+import * as fetchUtil from './utils/fetch';
 import createReducer from './reducers';
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with middlewares
   // routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
+    thunk,
+    apiMiddleware({ ...fetchUtil }),
+    // TODO:more
     routerMiddleware(history),
   ];
 

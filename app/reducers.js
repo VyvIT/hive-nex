@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
+import { reducer as form } from 'redux-form/immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import globalReducer from './App/reducer';
@@ -38,6 +39,7 @@ function routeReducer(state = routeInitialState, action) {
  */
 export default function createReducer(injectedReducers) {
   return combineReducers({
+    form,
     route: routeReducer,
     global: globalReducer,
     language: languageProviderReducer,

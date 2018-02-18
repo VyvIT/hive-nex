@@ -1,0 +1,24 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 8000,
+        "apiURL": null,
+        "schema": "https",
+        "certConfig": {
+            "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+            "certificate": "/certificate/server.crt",
+            "key": "/certificate/server.key"
+        },
+        "loggerConfig": {
+            "level": "error",
+            "filename": "hive-nex-ui.log",
+            "path": "root/var/log/hive-nex",
+            "zippedArchive": true,
+            "maxsize": 52428800,
+            "maxFiles": 5
+        },
+        "helpDocsConfig": {
+          "staticDir": "docs"
+        }
+    }
+}

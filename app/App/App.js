@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 import FeatureLoader from '../components/FeatureLoader';
+import LoginContainer from '../containers/LoginContainer';
 import LocaleToggle from '../containers/LocaleToggle';
 import Test from '../components/Test/Test';
 
@@ -36,6 +37,7 @@ export default function App() {
       {/*<Header />*/}
       <Switch>
         <Route exact path="/" component={FeatureLoader({ name: 'HomePage' })}/>
+        <Route path="/login" component={LoginContainer}/>
         <Route exact path="/page2" component={FeatureLoader({ name: 'Page2' })}/>
         <Route path="" component={FeatureLoader({ name: 'NotFoundPage' })}/>
       </Switch>
