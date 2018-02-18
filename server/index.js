@@ -1,4 +1,5 @@
 import express from 'express';
+
 const logger = require('./logger');
 const argv = require('./argv');
 const port = require('./port');
@@ -7,6 +8,10 @@ const setup = require('./middlewares/frontend');
 const resolve = require('path').resolve;
 
 const app = express();
+app.use('*', function (req, res, next) {
+  console.log(req.method, req.url);
+  next();
+});
 
 if (process.env.NODE_ENV === 'production') {
   console.log('production mode')

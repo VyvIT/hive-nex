@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   test: {
-    id: 'HomePage.test',
-    defaultMessage: 'This is a test message',
+    id: 'Page2.test',
+    defaultMessage: 'This is a test message 2',
   },
 });

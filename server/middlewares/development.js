@@ -1,5 +1,4 @@
 import path from 'path';
-import apiRouter from './api';
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -25,7 +24,6 @@ module.exports = function addDevMiddlewares(app, webpackConfig) {
 
   // Since webpackDevMiddleware uses memory-fs internally to store build artifacts, we use it instead
   const fs = webpackDevMiddleware.fileSystem;
-  app.use(apiRouter);
   app.get('*', (req, res) => {
     console.log('dev * handler');
     fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {

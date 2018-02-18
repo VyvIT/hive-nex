@@ -2,8 +2,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
-import HomePage from '../containers/HomePage/Loadable';
+import FeatureLoader from '../components/FeatureLoader';
 import LocaleToggle from '../containers/LocaleToggle';
+import Test from '../components/Test/Test';
 
 /*
  import FeaturePage from 'containers/FeaturePage/Loadable';
@@ -30,14 +31,15 @@ export default function App() {
       >
         <meta name="description" content="A React.js application"/>
       </Helmet>
-      <LocaleToggle />
+      <LocaleToggle/>
+      <Test/>
       {/*<Header />*/}
       <Switch>
-       <Route exact path="/" component={HomePage} />
-      {/* <Route path="/features" component={FeaturePage} />
-       <Route path="" component={NotFoundPage} />*/}
-       </Switch>
-       {/*<Footer />*/}
+        <Route exact path="/" component={FeatureLoader({ name: 'HomePage' })}/>
+        <Route exact path="/page2" component={FeatureLoader({ name: 'Page2' })}/>
+        <Route path="" component={FeatureLoader({ name: 'NotFoundPage' })}/>
+      </Switch>
+      {/*<Footer />*/}
     </AppWrapper>
   );
 }

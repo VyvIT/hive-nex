@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class Page2 extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
   }
@@ -12,11 +12,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { loading, error, repos } = this.props;
 
     return (
-      <div>Hello!!!
+      <div>Page2!!!
         <FormattedMessage {...messages.test} />
       </div>
     );
   }
 }
 
-export default HomePage;
+export default Page2;

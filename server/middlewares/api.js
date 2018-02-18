@@ -7,8 +7,14 @@ const proxyApiHandler = function (req, res) {
 };
 
 const proxy = httpProxy.createProxyServer({
-  target: 'https://10.100.248.4:8443', // baseUrl,
+  // target: 'https://10.100.248.4:8443', // baseUrl,
+  target: 'http://localhost:5000/api', // baseUrl,
+  preserveHeaderKeyCase: true,
   secure: false,
+});
+
+proxy.on('proxyRes', function (proxyRes, req, res) {
+  console.log(proxyRes.headers['set-cookie']);
 });
 
 proxy.on('error', (err, req) => {
