@@ -29,7 +29,7 @@ class Test extends React.Component {
     return (
       <div>
         <button onClick={this.login}>Test!</button>
-        <Link to="page2">Lin2</Link>
+        <Link to={{ pathname: '/page2', query: { a: 'a' } }}>Lin2</Link>
       </div>
     )
   }

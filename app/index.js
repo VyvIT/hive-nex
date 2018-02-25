@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import qs from 'qs';
 // import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
+import { enhanceHistory } from './utils/enhanceHistory';
+// import QueryInjector from './components/QueryInjector';
 import 'sanitize.css/sanitize.css';
 import App from './App/App';
 import LanguageProvider from 'containers/LanguageProvider';
@@ -35,7 +38,7 @@ import './global-styles';
 
 // Create redux store with history
 const initialState = {};
-const history = createHistory();
+const history = enhanceHistory(createHistory(), { parse: qs.parse, stringify: qs.stringify });
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 

@@ -23,16 +23,16 @@ export default defineMessages({
     id: 'LoginContainer.RequiredPassword',
     defaultMessage: 'The Password field is required.',
   },
-  userNameLabel: {
-    id: 'LoginContainer.UsernameLabel',
+  userName: {
+    id: 'LoginContainer.Username',
     defaultMessage: 'Username',
   },
-  passwordLabel: {
-    id: 'LoginContainer.PasswordLabel',
+  password: {
+    id: 'LoginContainer.Password',
     defaultMessage: 'Password',
   },
-  loginLabel: {
-    id: 'LoginContainer.LoginLabel',
+  login: {
+    id: 'LoginContainer.Login',
     defaultMessage: 'Login',
   },
   forgotPassword: {

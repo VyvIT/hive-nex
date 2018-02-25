@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Field, reduxForm } from 'redux-form/immutable'
+import { reduxForm } from 'redux-form/immutable'
 import injectReducer from '../../utils/injectReducer';
 import reducerConfig from './reducers';
 import * as actions from './actions';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+import InputField from '../../components/form/InputField';
 
-// import { withRouter } from 'react-router';
+ //import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom'
 // import css from './LoginContainer.css';
 // import * as actions from '../../actions/Auth';
 // import { reduxForm } from 'redux-form';
@@ -15,131 +19,115 @@ import * as actions from './actions';
 // import Login from './Login';
 
 /*
-export class LoginContainer extends Component {
-  static propTypes = {
-    login: PropTypes.func.isRequired,
-    router: PropTypes.object.isRequired,
-    fields: PropTypes.object.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    session: PropTypes.any,
-    checkSessionStorage: PropTypes.func.isRequired,
-  };
+ export class LoginContainer extends Component {
+ static propTypes = {
+ login: PropTypes.func.isRequired,
+ router: PropTypes.object.isRequired,
+ fields: PropTypes.object.isRequired,
+ submitting: PropTypes.bool.isRequired,
+ handleSubmit: PropTypes.func.isRequired,
+ location: PropTypes.object.isRequired,
+ session: PropTypes.any,
+ checkSessionStorage: PropTypes.func.isRequired,
+ };
 
-  componentDidMount() {
-    if (!this.props.session.sessionStorageChecked) {
-      this.props.checkSessionStorage();
-    } else {
-      if (this.props.session.isAuthenticated) {
-        this.redirectToPage();
-      }
-    }
-  }
+ componentDidMount() {
+ if (!this.props.session.sessionStorageChecked) {
+ this.props.checkSessionStorage();
+ } else {
+ if (this.props.session.isAuthenticated) {
+ this.redirectToPage();
+ }
+ }
+ }
+
+ onSubmit = (formData) => {
+ return this.props.login(formData).then((/!* payload *!/) => {
+ this.redirectToPage();
+ });
+ };
+
+ redirectToPage = () => {
+ const { next, ...rest } = this.props.location.query;
+ this.props.router.push({
+ pathname: next,
+ query: rest,
+ });
+ };
+
+ render() {
+ return (
+ <Login
+ {...this.props}
+ onSubmit={this.onSubmit}
+ />
+ );
+ }
+ }
+
+
+ function validate(values) {
+ const errors = {};
+ if (!values.username || values.username.trim() === '') {
+ errors.username = 'The Username field is required.';
+ }
+ if (!values.password || values.password.trim() === '') {
+ errors.password = 'The Password field is required.';
+ }
+ return errors;
+ }
+
+ const reduxFormConfig = {
+ form: 'loginForm',
+ fields: ['username', 'password'],
+ getFormState,
+ validate,
+ };
+
+ export default withRouter(reduxForm(
+ reduxFormConfig,
+ (store) => store.get('Auth').toJS(),
+ actions
+ )(LoginContainer));
+ */
+
+class LoginContainer extends Component {
 
   onSubmit = (formData) => {
-    return this.props.login(formData).then((/!* payload *!/) => {
-      this.redirectToPage();
-    });
+    return this.props.login(formData.toJS())
+      .then((/* payload */) => {
+        this.redirectToPage();
+      }).catch(error => {
+        console.log(error.statusText);
+      });
   };
 
   redirectToPage = () => {
+    console.log(this.props.location.query);
     const { next, ...rest } = this.props.location.query;
-    this.props.router.push({
+    this.props.history.push({
       pathname: next,
       query: rest,
     });
   };
 
   render() {
-    return (
-      <Login
-        {...this.props}
-        onSubmit={this.onSubmit}
-      />
-    );
-  }
-}
-
-
-function validate(values) {
-  const errors = {};
-  if (!values.username || values.username.trim() === '') {
-    errors.username = 'The Username field is required.';
-  }
-  if (!values.password || values.password.trim() === '') {
-    errors.password = 'The Password field is required.';
-  }
-  return errors;
-}
-
-const reduxFormConfig = {
-  form: 'loginForm',
-  fields: ['username', 'password'],
-  getFormState,
-  validate,
-};
-
-export default withRouter(reduxForm(
-  reduxFormConfig,
-  (store) => store.get('Auth').toJS(),
-  actions
-)(LoginContainer));
-*/
-
-
-const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning }
-}) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label}/>
-      {touched &&
-      ((error && <span>{error}</span>) ||
-        (warning && <span>{warning}</span>))}
-    </div>
-  </div>
-);
-
-class LoginContainer extends Component {
-
-  onSubmit = (formData) => {
-    console.log();
-    return this.props.login(formData.toJS()).then((/* payload */) => {
-      this.redirectToPage();
-    });
-  };
-
-  redirectToPage = () => {
-    console.log(this.props.location.query);
-    // const { next, ...rest } = this.props.location.query;
-    // this.props.router.push({
-    //   pathname: next,
-    //   query: rest,
-    // });
-  };
-
-  render() {
-    const { handleSubmit, pristine, reset, submitting } = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Field
+        <InputField
           name="username"
           type="text"
-          component={renderField}
-          label="Username"
+          label={messages.userName}
         />
-        <Field name="password" type="password" component={renderField} label="Password"/>
+        <InputField
+          name="password"
+          type="password"
+          label={messages.password}
+        />
         <div>
           <button type="submit" disabled={submitting}>
-            Submit
-          </button>
-          <button type="button" disabled={pristine || submitting} onClick={reset}>
-            Clear Values
+            <FormattedMessage {...messages.login}/>
           </button>
         </div>
       </form>
@@ -148,18 +136,15 @@ class LoginContainer extends Component {
 }
 
 const validate = (values) => {
-  console.log(values);
-  return {};
-  /*const errors = {};
-  if (!values.username || values.username.trim() === '') {
-    errors.username = 'The Username field is required.';
+  const errors = {};
+  if (!values.get('username') || values.get('username').trim() === '') {
+    errors.username = messages.requiredUserName;
   }
-  if (!values.password || values.password.trim() === '') {
-    errors.password = 'The Password field is required.';
+  if (!values.get('password') || values.get('password').trim() === '') {
+    errors.password = messages.requiredPassword;
   }
-  return errors;*/
+  return errors;
 };
-
 
 const withReducer = injectReducer(reducerConfig);
 const withReduxForm = reduxForm({
@@ -167,17 +152,17 @@ const withReduxForm = reduxForm({
   validate,
 });
 
-const mapStateToProps = (state) => {
-  console.log(state);
-  return {
-    test: 'a',
-  }
-};
-const withConnect = connect(mapStateToProps, { ...actions });
+/*const mapStateToProps = (state) => {
+ console.log(state);
+ return {
+ test: 'a',
+ }
+ };*/
+const withConnect = connect(null, { ...actions });
 
 export default compose(
-//  withReducer,
-  // withRouter ??? not required,
+  //  withReducer,
+  withRouter,// ??? not required,
   withConnect,
-  withReduxForm
+  withReduxForm,
 )(LoginContainer);

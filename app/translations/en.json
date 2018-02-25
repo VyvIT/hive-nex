@@ -1,5 +1,19 @@
 {
+  "HomePage.homePage": "Home Page...",
   "HomePage.test": "This is a test message",
   "LocaleToggle.de": "german",
-  "LocaleToggle.en": "english"
+  "LocaleToggle.en": "english",
+  "LoginContainer.AccountLocked": "Authentication Failed: User account is locked.",
+  "LoginContainer.Login": "Login",
+  "LoginContainer.LoginFail": "Credentials not found using Username / Password.",
+  "LoginContainer.LoginTitle": "Please enter your credentials",
+  "LoginContainer.Password": "Password",
+  "LoginContainer.RequiredPassword": "The Password field is required.",
+  "LoginContainer.RequiredUserName": "The Username field is required.",
+  "LoginContainer.Username": "Username",
+  "LoginContainer.defaultError": "Error: {message}",
+  "LoginContainer.forgotPassword": "Forgot password?",
+  "LoginContainer.sessionStorageError": "Failed writing to sessionStorage. Make sure browser is not in Private Mode.",
+  "Page2.test": "This is a test message 2",
+  "boilerplate.containers.NotFoundPage.header": "Page not found."
 }

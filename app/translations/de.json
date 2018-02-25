@@ -1,5 +1,19 @@
 {
+  "HomePage.homePage": "",
   "HomePage.test": "Dies ist eine Testnachricht",
   "LocaleToggle.de": "deutsch",
-  "LocaleToggle.en": "englisch"
+  "LocaleToggle.en": "englisch",
+  "LoginContainer.AccountLocked": "",
+  "LoginContainer.Login": "",
+  "LoginContainer.LoginFail": "",
+  "LoginContainer.LoginTitle": "",
+  "LoginContainer.Password": "Password (de)",
+  "LoginContainer.RequiredPassword": "",
+  "LoginContainer.RequiredUserName": "",
+  "LoginContainer.Username": "Username (de)",
+  "LoginContainer.defaultError": "",
+  "LoginContainer.forgotPassword": "",
+  "LoginContainer.sessionStorageError": "",
+  "Page2.test": "",
+  "boilerplate.containers.NotFoundPage.header": ""
 }
