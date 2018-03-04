@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+// import { BrowserRouter, Route } from 'react-router-dom';
 import qs from 'qs';
 // import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
@@ -39,6 +40,7 @@ import './global-styles';
 // Create redux store with history
 const initialState = {};
 const history = enhanceHistory(createHistory(), { parse: qs.parse, stringify: qs.stringify });
+// const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 

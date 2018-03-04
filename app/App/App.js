@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
@@ -6,6 +6,7 @@ import FeatureLoader from '../components/FeatureLoader';
 import LoginContainer from '../containers/LoginContainer';
 import LocaleToggle from '../containers/LocaleToggle';
 import Test from '../components/Test/Test';
+import PrivateRoute from '../containers/router/PrivateRoute';
 
 /*
  import FeaturePage from 'containers/FeaturePage/Loadable';
@@ -23,25 +24,41 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-export default function App() {
-  return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js"
-        defaultTitle="React.js"
-      >
-        <meta name="description" content="A React.js application"/>
-      </Helmet>
-      <LocaleToggle/>
-      <Test/>
-      {/*<Header />*/}
-      <Switch>
-        <Route exact path="/" component={FeatureLoader({ name: 'HomePage' })}/>
-        <Route path="/login" component={LoginContainer}/>
-        <Route exact path="/page2" component={FeatureLoader({ name: 'Page2' })}/>
-        <Route path="" component={FeatureLoader({ name: 'NotFoundPage' })}/>
-      </Switch>
-      {/*<Footer />*/}
-    </AppWrapper>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+  }
+
+  render() {
+    return (
+      <Route
+        render={({ location }) => {
+          return (
+            <AppWrapper>
+              <Helmet
+                titleTemplate="%s - React.js"
+                defaultTitle="React.js"
+              >
+                <meta name="description" content="A React.js application"/>
+              </Helmet>
+              <LocaleToggle/>
+              <Test/>
+              {/*<Header />*/}
+              <div>---</div>
+              <Switch>
+                <Route path="/login" component={LoginContainer}/>
+                <PrivateRoute exact path="/" component={FeatureLoader({ name: 'HomePage' })}/>
+                <PrivateRoute exact path="/page2" component={FeatureLoader({ name: 'Page2' })}/>
+                <PrivateRoute path="" component={FeatureLoader({ name: 'NotFoundPage' })}/>
+              </Switch>
+              {/*<Footer />*/}
+            </AppWrapper>
+          );
+        }}
+      />
+    )
+  }
 }
+
+export default App

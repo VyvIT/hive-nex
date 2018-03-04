@@ -27,6 +27,13 @@ export const login = ({ username, password }) => {
   });
 };
 
+export const setSession = (session) => (dispatch) => {
+  dispatch({
+    type: LOGIN.SUCCESS,
+    payload: session,
+  });
+}
+
 // return (dispatch) => {
 //   const formData = [
 //     ['username', data.username],

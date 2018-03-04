@@ -1,13 +1,10 @@
-import { fromJS } from 'immutable';
+import { combineReducers } from 'redux-immutable';
+import session, { selectCurrentUser, selectIsLoading } from '../containers/LoginContainer/reducers';
+import { createSelector } from 'reselect';
 
-// The initial state of the App
-const initialState = fromJS({
-  error: false,
-  currentUser: false,
+export default combineReducers({
+  session,
 });
 
-function appReducer(state = initialState, action) {
-  return state;
-}
-
-export default appReducer;
+export const selectAppUser = createSelector((state) => state.get('app').get('session'), selectCurrentUser);
+export const selectAppUserIsLoading = createSelector((state) => state.get('app').get('session'), selectIsLoading);

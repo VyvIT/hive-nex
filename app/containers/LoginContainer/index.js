@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form/immutable'
-import injectReducer from '../../utils/injectReducer';
-import reducerConfig from './reducers';
+import { createStructuredSelector } from 'reselect';
 import * as actions from './actions';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import InputField from '../../components/form/InputField';
 
- //import { withRouter } from 'react-router';
-import { withRouter } from 'react-router-dom'
+//import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router-dom'
+import { selectAppUser } from '../../App/reducer';
+import { SESSION_STORAGE_KEY } from './constants/index';
 // import css from './LoginContainer.css';
 // import * as actions from '../../actions/Auth';
 // import { reduxForm } from 'redux-form';
@@ -91,27 +92,57 @@ import { withRouter } from 'react-router-dom'
  )(LoginContainer));
  */
 
+/*
+ button {
+ border:1px solid #fff;
+ padding:5px 10px;
+ background-color:#0064ec;
+ color:#fff;
+ border-radius: 4px;
+ transition: .3s;
+ }
+
+ button[disabled] {
+ color: #a5a5a5;
+ background-color: #004cb3;
+ border-radius: 6px;
+ }*/
+
 class LoginContainer extends Component {
+  state = {
+    redirect: false,
+  };
+
+  componentDidMount() {
+    try {
+      const session = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY));
+      if (session) {
+        this.props.setSession(session);
+      }
+      console.log(session);
+    } catch (e) {
+      //
+    }
+  }
 
   onSubmit = (formData) => {
     return this.props.login(formData.toJS())
-      .then((/* payload */) => {
-        this.redirectToPage();
+      .then(({ username }) => {
+        this.setState({ redirect: true });
+        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ username }));
       }).catch(error => {
         console.log(error.statusText);
       });
   };
 
-  redirectToPage = () => {
-    console.log(this.props.location.query);
-    const { next, ...rest } = this.props.location.query;
-    this.props.history.push({
-      pathname: next,
-      query: rest,
-    });
-  };
-
   render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { currentUser } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect || currentUser) {
+      return <Redirect to={from}/>;
+    }
     const { handleSubmit, submitting } = this.props;
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -146,22 +177,17 @@ const validate = (values) => {
   return errors;
 };
 
-const withReducer = injectReducer(reducerConfig);
 const withReduxForm = reduxForm({
   form: 'login', // a unique identifier for this form
   validate,
 });
 
-/*const mapStateToProps = (state) => {
- console.log(state);
- return {
- test: 'a',
- }
- };*/
-const withConnect = connect(null, { ...actions });
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectAppUser,
+});
+const withConnect = connect(mapStateToProps, { ...actions });
 
 export default compose(
-  //  withReducer,
   withRouter,// ??? not required,
   withConnect,
   withReduxForm,
